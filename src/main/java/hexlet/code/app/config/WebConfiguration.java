@@ -37,8 +37,7 @@ public class WebConfiguration implements WebMvcConfigurer {
 				.addResolver(new PathResourceResolver() {
 					@Override
 					protected Resource getResource(String resourcePath, Resource location) throws IOException {
-						if (resourcePath.startsWith(baseApiPath)
-								|| resourcePath.startsWith(baseApiPath.substring(1))) {
+						if (resourcePath.startsWith(baseApiPath) || resourcePath.startsWith(baseApiPath.substring(1))) {
 							return null;
 						}
 

@@ -3,46 +3,45 @@ package hexlet.code.app.service;
 import hexlet.code.app.dto.UserDto;
 import hexlet.code.app.model.User;
 import hexlet.code.app.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import lombok.AllArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
+
 import static hexlet.code.app.config.security.SecurityConfig.DEFAULT_AUTHORITIES;
 
-
 @Service
-@AllArgsConstructor
 @Transactional
+@AllArgsConstructor
 public class UserServiceImpl implements UserService, UserDetailsService {
 
 	private final UserRepository userRepository;
+
 	private final PasswordEncoder passwordEncoder;
 
 	@Override
-	public User createNewUser(UserDto userDto) {
-		User user = new User();
+	public User createNewUser(final UserDto userDto) {
+		final User user = new User();
+		user.setEmail(userDto.getEmail());
 		user.setFirstName(userDto.getFirstName());
 		user.setLastName(userDto.getLastName());
-		user.setEmail(userDto.getEmail());
 		user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		return userRepository.save(user);
 	}
 
-
 	@Override
-	public User updateUser(long id, UserDto userDto) {
-		User userToUpdate = userRepository.findById(id).get();
+	public User updateUser(final long id, final UserDto userDto) {
+		final User userToUpdate = userRepository.findById(id).get();
+		userToUpdate.setEmail(userDto.getEmail());
 		userToUpdate.setFirstName(userDto.getFirstName());
 		userToUpdate.setLastName(userDto.getLastName());
-		userToUpdate.setEmail(userDto.getEmail());
 		userToUpdate.setPassword(passwordEncoder.encode(userDto.getPassword()));
 		return userRepository.save(userToUpdate);
 	}
-
 
 	@Override
 	public String getCurrentUserName() {
@@ -68,5 +67,4 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 				DEFAULT_AUTHORITIES
 		);
 	}
-
 }

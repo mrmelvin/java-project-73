@@ -1,53 +1,54 @@
 package hexlet.code.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.persistence.Temporal;
+import javax.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.util.Date;
+import static javax.persistence.GenerationType.IDENTITY;
+import static javax.persistence.TemporalType.TIMESTAMP;
 
-@Setter
-@Getter
 @Entity
+@Getter
+@Setter
 @Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
-    @Size(min = 1)
-    @NotNull
-    private String firstName;
+    @GeneratedValue(strategy = IDENTITY)
+    private Long id;
 
-    @Size(min = 1)
-    @NotNull
-    private String lastName;
-
-    @Size(min = 1)
-    @Email
-    @NotNull
+    @Column(unique = true)
     private String email;
 
-    @Size(min = 3)
-    @NotNull
+    @NotBlank
+    private String firstName;
+
+    @NotBlank
+    private String lastName;
+
+    @NotBlank
     @JsonIgnore
     private String password;
 
     @CreationTimestamp
+    @Temporal(TIMESTAMP)
     private Date createdAt;
+
+    public User(final Long id) {
+        this.id = id;
+    }
 
 }
