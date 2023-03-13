@@ -10,11 +10,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -42,9 +39,10 @@ class AppApplicationTests {
         MockHttpServletResponse responsePost = mockMvc.perform(
                 post("/api/users")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\":\"johndoe@yahoo.com\",\"firstName\":\"John\",\"lastName\":\"Doe\",\"password\":\"qwerty\"}"))
+                        .content("{\"email\":\"johndoe@yahoo.com\",\"firstName\":"
+                                + "\"John\",\"lastName\":\"Doe\",\"password\":\"qwerty\"}"))
                         .andReturn().getResponse();
-        assertThat(responsePost.getStatus()).isEqualTo(200);
+        assertThat(responsePost.getStatus()).isEqualTo(201);
 
 
         MockHttpServletResponse response = mockMvc
@@ -56,5 +54,6 @@ class AppApplicationTests {
         assertThat(response.getContentType()).isEqualTo(MediaType.APPLICATION_JSON.toString());
         assertThat(response.getContentAsString()).contains("johndoe@yahoo.com", "John");
     }
+
 
 }
