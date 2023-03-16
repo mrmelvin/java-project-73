@@ -17,7 +17,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Getter
 @Setter
 @Entity
-@Table(name = "tasks")
+@Table(name = "TASKS")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Task {
