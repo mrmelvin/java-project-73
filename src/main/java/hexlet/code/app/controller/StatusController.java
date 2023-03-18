@@ -32,48 +32,48 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequestMapping("${base-url}" + STATUS_CONTROLLER_PATH)
 public class StatusController {
 
-	public static final String STATUS_CONTROLLER_PATH = "/statuses";
-	public static final String ID = "/{id}";
+    public static final String STATUS_CONTROLLER_PATH = "/statuses";
+    public static final String ID = "/{id}";
 
-	private static final String ONLY_OWNER_BY_ID = """
+    private static final String ONLY_OWNER_BY_ID = """
             @userRepository.findById(#id).get().getEmail() == authentication.getName()
         """;
-	private final StatusRepository statusRepository;
-	private final StatusService statusService;
+    private final StatusRepository statusRepository;
+    private final StatusService statusService;
 
-	@Operation(summary = "Create new status")
-	@ApiResponse(responseCode = "201", description = "Status created")
-	@PostMapping
-	@ResponseStatus(CREATED)
-	public Status createNewStatus(@RequestBody @Valid final StatusDto statusDto) {
-		return statusService.createNewStatus(statusDto);
-	}
-
-
-	@GetMapping
-	public List<Status> getAll() {
-		List<Status> allStatuses = new ArrayList<>();
-		statusRepository.findAll().forEach(allStatuses::add);
-		return allStatuses;
-	}
+    @Operation(summary = "Create new status")
+    @ApiResponse(responseCode = "201", description = "Status created")
+    @PostMapping
+    @ResponseStatus(CREATED)
+    public Status createNewStatus(@RequestBody @Valid final StatusDto statusDto) {
+        return statusService.createNewStatus(statusDto);
+    }
 
 
-	@GetMapping(ID)
-	public Status getStatusById(@PathVariable final Long id) {
-		return statusRepository.findById(id).get();
-	}
+    @GetMapping
+    public List<Status> getAll() {
+        List<Status> allStatuses = new ArrayList<>();
+        statusRepository.findAll().forEach(allStatuses::add);
+        return allStatuses;
+    }
 
-	@PutMapping(ID)
-	@PreAuthorize(ONLY_OWNER_BY_ID)
-	public Status update(@PathVariable final long id, @RequestBody @Valid final StatusDto statusDto) {
-		return statusService.updateStatus(id, statusDto);
-	}
 
-	@DeleteMapping(ID)
-	@PreAuthorize(ONLY_OWNER_BY_ID)
-	public void delete(@PathVariable final long id) {
-		statusRepository.deleteById(id);
-	}
+    @GetMapping(ID)
+    public Status getStatusById(@PathVariable final Long id) {
+        return statusRepository.findById(id).get();
+    }
+
+    @PutMapping(ID)
+    @PreAuthorize(ONLY_OWNER_BY_ID)
+    public Status update(@PathVariable final long id, @RequestBody @Valid final StatusDto statusDto) {
+        return statusService.updateStatus(id, statusDto);
+    }
+
+    @DeleteMapping(ID)
+    @PreAuthorize(ONLY_OWNER_BY_ID)
+    public void delete(@PathVariable final long id) {
+        statusRepository.deleteById(id);
+    }
 
 
 }

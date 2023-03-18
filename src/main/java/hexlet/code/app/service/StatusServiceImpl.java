@@ -12,20 +12,20 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class StatusServiceImpl implements StatusService {
 
-	private final StatusRepository statusRepository;
+    private final StatusRepository statusRepository;
 
 
-	@Override
-	public Status createNewStatus(StatusDto statusDto) {
-		final Status status = new Status();
-		status.setName(statusDto.getName());
-		return statusRepository.save(status);
-	}
+    @Override
+    public Status createNewStatus(StatusDto statusDto) {
+        final Status status = new Status();
+        status.setName(statusDto.getName());
+        return statusRepository.save(status);
+    }
 
-	@Override
-	public Status updateStatus(Long statusId, StatusDto statusDto) {
-		final Status status = statusRepository.findById(statusId).get();
-		status.setName(statusDto.getName());
-		return statusRepository.save(status);
-	}
+    @Override
+    public Status updateStatus(Long statusId, StatusDto statusDto) {
+        final Status status = statusRepository.findById(statusId).get();
+        status.setName(statusDto.getName());
+        return statusRepository.save(status);
+    }
 }

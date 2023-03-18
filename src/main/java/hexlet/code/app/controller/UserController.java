@@ -32,52 +32,52 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RestController
 @RequestMapping("${base-url}" + USER_CONTROLLER_PATH)
 public class UserController {
-	public static final String USER_CONTROLLER_PATH = "/users";
-	public static final String ID = "/{id}";
+    public static final String USER_CONTROLLER_PATH = "/users";
+    public static final String ID = "/{id}";
 
-	private static final String ONLY_OWNER_BY_ID = """
+    private static final String ONLY_OWNER_BY_ID = """
             @userRepository.findById(#id).get().getEmail() == authentication.getName()
         """;
 
-	private final UserService userService;
-	private final UserRepository userRepository;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
-	@Operation(summary = "Create new user")
-	@ApiResponse(responseCode = "201", description = "User created")
-	@PostMapping
-	@ResponseStatus(CREATED)
-	public User registerNew(@RequestBody @Valid final UserDto dto) {
-		return userService.createNewUser(dto);
-	}
+    @Operation(summary = "Create new user")
+    @ApiResponse(responseCode = "201", description = "User created")
+    @PostMapping
+    @ResponseStatus(CREATED)
+    public User registerNew(@RequestBody @Valid final UserDto dto) {
+        return userService.createNewUser(dto);
+    }
 
-	// Content используется для укзания содержимого ответа
-	@ApiResponses(@ApiResponse(responseCode = "200", content =
-			// Указываем тип содержимого ответа
-	@Content(schema = @Schema(implementation = User.class))
-	))
-	@GetMapping
-	public List<User> getAll() {
-		List<User> allUsers = new ArrayList<>();
-		userRepository.findAll().forEach(allUsers::add);
-		return allUsers;
-	}
+    // Content используется для укзания содержимого ответа
+    @ApiResponses(@ApiResponse(responseCode = "200", content =
+            // Указываем тип содержимого ответа
+    @Content(schema = @Schema(implementation = User.class))
+    ))
+    @GetMapping
+    public List<User> getAll() {
+        List<User> allUsers = new ArrayList<>();
+        userRepository.findAll().forEach(allUsers::add);
+        return allUsers;
+    }
 
-	@ApiResponses(@ApiResponse(responseCode = "200"))
-	@GetMapping(ID)
-	public User getUserById(@PathVariable final Long id) {
-		return userRepository.findById(id).get();
-	}
+    @ApiResponses(@ApiResponse(responseCode = "200"))
+    @GetMapping(ID)
+    public User getUserById(@PathVariable final Long id) {
+        return userRepository.findById(id).get();
+    }
 
-	@PutMapping(ID)
-	@PreAuthorize(ONLY_OWNER_BY_ID)
-	public User update(@PathVariable final long id, @RequestBody @Valid final UserDto dto) {
-		return userService.updateUser(id, dto);
-	}
+    @PutMapping(ID)
+    @PreAuthorize(ONLY_OWNER_BY_ID)
+    public User update(@PathVariable final long id, @RequestBody @Valid final UserDto dto) {
+        return userService.updateUser(id, dto);
+    }
 
-	@DeleteMapping(ID)
-	@PreAuthorize(ONLY_OWNER_BY_ID)
-	public void delete(@PathVariable final long id) {
-		userRepository.deleteById(id);
-	}
+    @DeleteMapping(ID)
+    @PreAuthorize(ONLY_OWNER_BY_ID)
+    public void delete(@PathVariable final long id) {
+        userRepository.deleteById(id);
+    }
 
 }

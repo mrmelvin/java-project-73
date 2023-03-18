@@ -33,48 +33,48 @@ import static org.springframework.http.HttpStatus.CREATED;
 @RequestMapping("${base-url}" + TASK_CONTROLLER_PATH)
 public class TaskController {
 
-	public static final String TASK_CONTROLLER_PATH = "/tasks";
+    public static final String TASK_CONTROLLER_PATH = "/tasks";
 
-	public static final String ID = "/{id}";
+    public static final String ID = "/{id}";
 
-	private static final String ONLY_OWNER_BY_ID = """
+    private static final String ONLY_OWNER_BY_ID = """
             @userRepository.findById(#id).get().getEmail() == authentication.getName()
         """;
 
-	private TaskRepository taskRepository;
+    private TaskRepository taskRepository;
 
-	private TaskService taskService;
+    private TaskService taskService;
 
-	@Operation(summary = "Create new status")
-	@ApiResponse(responseCode = "201", description = "Task created")
-	@PostMapping
-	@ResponseStatus(CREATED)
-	public Task createNewTask(@RequestBody @Valid final TaskDto taskDto) {
-		return taskService.createNewTask(taskDto);
-	}
+    @Operation(summary = "Create new status")
+    @ApiResponse(responseCode = "201", description = "Task created")
+    @PostMapping
+    @ResponseStatus(CREATED)
+    public Task createNewTask(@RequestBody @Valid final TaskDto taskDto) {
+        return taskService.createNewTask(taskDto);
+    }
 
-	@GetMapping
-	public List<Task> getAll() {
-		List<Task> allTasks = new ArrayList<>();
-		taskRepository.findAll().forEach(allTasks::add);
-		return allTasks;
-	}
+    @GetMapping
+    public List<Task> getAll() {
+        List<Task> allTasks = new ArrayList<>();
+        taskRepository.findAll().forEach(allTasks::add);
+        return allTasks;
+    }
 
 
-	@GetMapping(ID)
-	public Task getTaskById(@PathVariable final Long id) {
-		return taskRepository.findById(id).get();
-	}
+    @GetMapping(ID)
+    public Task getTaskById(@PathVariable final Long id) {
+        return taskRepository.findById(id).get();
+    }
 
-	@PutMapping(ID)
-	@PreAuthorize(ONLY_OWNER_BY_ID)
-	public Task update(@PathVariable final long id, @RequestBody @Valid final TaskDto taskDto) {
-		return taskService.updateTask(id, taskDto);
-	}
+    @PutMapping(ID)
+    @PreAuthorize(ONLY_OWNER_BY_ID)
+    public Task update(@PathVariable final long id, @RequestBody @Valid final TaskDto taskDto) {
+        return taskService.updateTask(id, taskDto);
+    }
 
-	@DeleteMapping(ID)
-	@PreAuthorize(ONLY_OWNER_BY_ID)
-	public void delete(@PathVariable final long id) {
-		taskRepository.deleteById(id);
-	}
+    @DeleteMapping(ID)
+    @PreAuthorize(ONLY_OWNER_BY_ID)
+    public void delete(@PathVariable final long id) {
+        taskRepository.deleteById(id);
+    }
 }

@@ -1,8 +1,6 @@
 package hexlet.code.app.dto;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
@@ -15,12 +13,12 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class LoginDto {
 
-	@Email
-	@NotBlank
-	private String email;
+    @Email
+    @NotBlank
+    private String email;
 
-	@NotBlank
-	@Size(min = 3, max = 100)
-	private String password;
+    @NotBlank
+    @Size(min = 3, max = 100)
+    private String password;
 
 }

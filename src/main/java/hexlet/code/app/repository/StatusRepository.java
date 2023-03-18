@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface StatusRepository extends CrudRepository<Status, Long> {
-	Optional<Status> findByName(String name);
+    Optional<Status> findByName(String name);
 }

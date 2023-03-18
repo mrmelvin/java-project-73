@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StatusDto {
 
-	private String name;
+    private String name;
 }

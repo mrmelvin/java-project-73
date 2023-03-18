@@ -13,14 +13,14 @@ import javax.validation.constraints.Size;
 @AllArgsConstructor
 public class TaskDto {
 
-	@NotBlank
-	@Size(min = 1)
-	private String name;
+    @NotBlank
+    @Size(min = 1)
+    private String name;
 
-	private String description;
+    private String description;
 
-	private Long executorId;
+    private Long executorId;
 
-	@NotNull
-	private Long statusId;
+    @NotNull
+    private Long statusId;
 }

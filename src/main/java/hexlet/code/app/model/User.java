@@ -2,9 +2,12 @@ package hexlet.code.app.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Column;
+import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 
 import lombok.AllArgsConstructor;
