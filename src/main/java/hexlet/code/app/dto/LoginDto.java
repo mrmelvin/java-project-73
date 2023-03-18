@@ -11,15 +11,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginDto {
-
-	private String firstName;
-
-	private String lastName;
 
 	@Email
 	@NotBlank

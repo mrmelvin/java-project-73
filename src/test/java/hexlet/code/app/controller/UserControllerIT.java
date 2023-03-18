@@ -75,12 +75,116 @@ public class UserControllerIT {
 				.andReturn()
 				.getResponse();
 
-		final User user = fromJson(response.getContentAsString(), new TypeReference<>() {
-		});
+		final User user = fromJson(response.getContentAsString(), new TypeReference<>() {});
 
 		assertEquals(expectedUser.getId(), user.getId());
 		assertEquals(expectedUser.getEmail(), user.getEmail());
 		assertEquals(expectedUser.getFirstName(), user.getFirstName());
 		assertEquals(expectedUser.getLastName(), user.getLastName());
+	}
+
+	@Disabled("For now active only positive tests")
+	@Test
+	public void getUserByIdFails() throws Exception {
+		utils.regDefaultUser();
+		final User expectedUser = userRepository.findAll().iterator().next();
+		utils.perform(get("/api" + USER_CONTROLLER_PATH + ID, expectedUser.getId()))
+				.andExpect(status().isUnauthorized());
+
+	}
+
+	@Test
+	public void getAllUsers() throws Exception {
+		utils.regDefaultUser();
+		final var response = utils.perform(get("/api" + USER_CONTROLLER_PATH))
+				.andExpect(status().isOk())
+				.andReturn()
+				.getResponse();
+
+		final List<User> users = fromJson(response.getContentAsString(), new TypeReference<>() {
+		});
+
+		assertThat(users).hasSize(1);
+	}
+
+	@Disabled("For now active only positive tests")
+	@Test
+	public void twiceRegTheSameUserFail() throws Exception {
+		utils.regDefaultUser().andExpect(status().isCreated());
+		utils.regDefaultUser().andExpect(status().isBadRequest());
+
+		assertEquals(1, userRepository.count());
+	}
+
+	@Test
+	public void login() throws Exception {
+		utils.regDefaultUser();
+		final LoginDto loginDto = new LoginDto(
+				utils.getTestRegistrationDto().getEmail(),
+				utils.getTestRegistrationDto().getPassword()
+		);
+		final var loginRequest = post("/api" + LOGIN).content(asJson(loginDto)).contentType(APPLICATION_JSON);
+		utils.perform(loginRequest).andExpect(status().isOk());
+	}
+
+	@Disabled("For now active only positive tests")
+	@Test
+	public void loginFail() throws Exception {
+		final LoginDto loginDto = new LoginDto(
+				utils.getTestRegistrationDto().getEmail(),
+				utils.getTestRegistrationDto().getPassword()
+		);
+		final var loginRequest = post(LOGIN).content(asJson(loginDto)).contentType(APPLICATION_JSON);
+		utils.perform(loginRequest).andExpect(status().isUnauthorized());
+	}
+
+	@Test
+	public void updateUser() throws Exception {
+		utils.regDefaultUser();
+
+		final Long userId = userRepository.findByEmail(TEST_EMAIL).get().getId();
+
+		final var userDto = new UserDto(TEST_EMAIL2, "new name", "new last name", "new pwd");
+
+		final var updateRequest = put("/api" + USER_CONTROLLER_PATH + ID, userId)
+				.content(asJson(userDto))
+				.contentType(APPLICATION_JSON);
+
+		utils.perform(updateRequest, TEST_EMAIL).andExpect(status().isOk());
+
+		assertTrue(userRepository.existsById(userId));
+		assertNull(userRepository.findByEmail(TEST_EMAIL).orElse(null));
+		assertNotNull(userRepository.findByEmail(TEST_EMAIL2).orElse(null));
+	}
+
+	@Test
+	public void deleteUser() throws Exception {
+		utils.regDefaultUser();
+
+		final Long userId = userRepository.findByEmail(TEST_EMAIL).get().getId();
+
+		utils.perform(delete("/api" + USER_CONTROLLER_PATH + ID, userId), TEST_EMAIL)
+				.andExpect(status().isOk());
+
+		assertEquals(0, userRepository.count());
+	}
+
+	@Disabled("For now active only positive tests")
+	@Test
+	public void deleteUserFails() throws Exception {
+		utils.regDefaultUser();
+		utils.regUser(new UserDto(
+				TEST_EMAIL2,
+				"fname",
+				"lname",
+				"pwd"
+		));
+
+		final Long userId = userRepository.findByEmail(TEST_EMAIL).get().getId();
+
+		utils.perform(delete("/api" + USER_CONTROLLER_PATH + ID, userId), TEST_EMAIL2)
+				.andExpect(status().isForbidden());
+
+		assertEquals(2, userRepository.count());
 	}
 }
