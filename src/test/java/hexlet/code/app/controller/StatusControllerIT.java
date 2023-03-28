@@ -81,7 +81,7 @@ public class StatusControllerIT {
 
 
     @Test
-    public void updateTask() throws Exception {
+    public void updateStatus() throws Exception {
         utils.createDefaultStatus();
 
         final Long statusId = statusRepository.findAll().iterator().next().getId();
@@ -98,7 +98,7 @@ public class StatusControllerIT {
 
 
     @Test
-    public void deleteTask() throws Exception {
+    public void deleteStatus() throws Exception {
         utils.createDefaultStatus();
         final Long statusId = statusRepository.findAll().iterator().next().getId();
         String currentUrl = "/api" + STATUS_CONTROLLER_PATH + StatusController.ID;

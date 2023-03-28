@@ -1,9 +1,6 @@
 package hexlet.code.app.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
@@ -27,6 +24,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Setter
 @Entity
 @Table(name = "TASKS")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Task {
@@ -43,7 +41,7 @@ public class Task {
     private String description;
 
     @NotNull
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "status_id")
     private Status status;
 

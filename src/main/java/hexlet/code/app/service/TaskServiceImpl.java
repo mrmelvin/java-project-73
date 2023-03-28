@@ -21,17 +21,18 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task createNewTask(TaskDto taskDto) {
-        final Task task = new Task();
-        task.setName(taskDto.getName());
-        task.setDescription(taskDto.getDescription());
-        task.setAuthor(userService.getCurrentUser());
-        Status statusFromDto = statusRepository.findById(taskDto.getStatusId()).get();
-        task.setStatus(statusFromDto);
-        if (taskDto.getExecutorId() != null) {
-            User executorFromDto = userRepository.findById(taskDto.getExecutorId()).get();
-            task.setExecutor(executorFromDto);
-        }
-        return taskRepository.save(task);
+//        final Task task = new Task();
+//        task.setName(taskDto.getName());
+//        task.setDescription(taskDto.getDescription());
+//        task.setAuthor(userService.getCurrentUser());
+//        Status statusFromDto = statusRepository.findById(taskDto.getStatusId()).get();
+//        task.setStatus(statusFromDto);
+//        if (taskDto.getExecutorId() != null) {
+//            User executorFromDto = userRepository.findById(taskDto.getExecutorId()).get();
+//            task.setExecutor(executorFromDto);
+//        }
+        Task newTask = fromDto(taskDto);
+        return taskRepository.save(newTask);
     }
 
     @Override
@@ -47,5 +48,23 @@ public class TaskServiceImpl implements TaskService {
             taskToUpdate.setExecutor(executorFromDto);
         }
         return taskRepository.save(taskToUpdate);
+    }
+
+    private Task fromDto(TaskDto taskDto) {
+        User author = userService.getCurrentUser();
+        User executorFromDto = null;
+        Status statusFromDto = null;
+        if (taskDto.getExecutorId() != null) {
+            executorFromDto = userRepository.findById(taskDto.getExecutorId()).get();
+        }
+        if (taskDto.getStatusId() != null) {
+            statusFromDto = statusRepository.findById(taskDto.getStatusId()).get();
+        }
+        return Task.builder()
+                    .author(author)
+                    .name(taskDto.getName())
+                    .description(taskDto.getDescription())
+                    .executor(executorFromDto)
+                    .status(statusFromDto).build();
     }
 }

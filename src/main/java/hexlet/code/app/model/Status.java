@@ -1,6 +1,7 @@
 package hexlet.code.app.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,6 +36,7 @@ public class Status {
     private String name;
 
     @OneToOne(mappedBy = "status")
+    @JsonIgnore
     private Task task;
 
     @CreationTimestamp

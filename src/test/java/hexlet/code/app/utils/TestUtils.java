@@ -67,9 +67,9 @@ public class TestUtils {
     private JWTHelper jwtHelper;
 
     public void tearDown() {
-        userRepository.deleteAll();
-        statusRepository.deleteAll();
         taskRepository.deleteAll();
+        statusRepository.deleteAll();
+        userRepository.deleteAll();
     }
 
     public User getUserByEmail(final String email) {
