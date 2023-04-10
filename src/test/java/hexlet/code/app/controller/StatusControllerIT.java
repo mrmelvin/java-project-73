@@ -3,9 +3,9 @@ package hexlet.code.app.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.app.config.SpringConfigForIT;
-import hexlet.code.app.dto.StatusDto;
-import hexlet.code.app.model.Status;
-import hexlet.code.app.repository.StatusRepository;
+import hexlet.code.app.dto.TaskStatusDto;
+import hexlet.code.app.model.TaskStatus;
+import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.utils.TestUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static hexlet.code.app.config.SpringConfigForIT.TEST_PROFILE;
-import static hexlet.code.app.controller.StatusController.ID;
+import static hexlet.code.app.controller.TaskStatusController.ID;
 import static hexlet.code.app.utils.TestUtils.asJson;
 import static hexlet.code.app.utils.TestUtils.fromJson;
 import static hexlet.code.app.utils.TestUtils.TEST_EMAIL;
@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static hexlet.code.app.controller.StatusController.STATUS_CONTROLLER_PATH;
+import static hexlet.code.app.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 
 
 @AutoConfigureMockMvc
@@ -41,7 +41,7 @@ import static hexlet.code.app.controller.StatusController.STATUS_CONTROLLER_PATH
 public class StatusControllerIT {
 
     @Autowired
-    private StatusRepository statusRepository;
+    private TaskStatusRepository taskStatusRepository;
 
     @Autowired
     private TestUtils utils;
@@ -60,20 +60,20 @@ public class StatusControllerIT {
 
     @Test
     public void createStatus() throws Exception {
-        StatusDto newStatus = new StatusDto("testNewStatus");
-        final var request = post("/api" + STATUS_CONTROLLER_PATH)
+        TaskStatusDto newStatus = new TaskStatusDto("testNewStatus");
+        final var request = post("/api" + TASK_STATUS_CONTROLLER_PATH)
                                                             .content(asJson(newStatus)).contentType(APPLICATION_JSON);
         utils.perform(request, TEST_EMAIL).andExpect(status().isCreated());
 
-        final Status expectedStatus = statusRepository.findAll().iterator().next();
+        final TaskStatus expectedStatus = taskStatusRepository.findAll().iterator().next();
         final var response = utils.perform(
-                        get("/api" + STATUS_CONTROLLER_PATH + ID,
+                        get("/api" + TASK_STATUS_CONTROLLER_PATH + ID,
                                 expectedStatus.getId()), TEST_EMAIL)
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
 
-        final Status status = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final TaskStatus status = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
         assertEquals(expectedStatus.getName(), status.getName());
@@ -84,28 +84,28 @@ public class StatusControllerIT {
     public void updateStatus() throws Exception {
         utils.createDefaultStatus();
 
-        final Long statusId = statusRepository.findAll().iterator().next().getId();
-        final var status = new StatusDto(TEST_STATUS_NAME2);
+        final Long statusId = taskStatusRepository.findAll().iterator().next().getId();
+        final var status = new TaskStatusDto(TEST_STATUS_NAME2);
 
-        String currentUrl = "/api" + STATUS_CONTROLLER_PATH + StatusController.ID;
+        String currentUrl = "/api" + TASK_STATUS_CONTROLLER_PATH + TaskStatusController.ID;
         final var updateRequest = put(currentUrl, statusId)
                 .content(asJson(status))
                 .contentType(APPLICATION_JSON);
         utils.perform(updateRequest, TEST_EMAIL).andExpect(status().isOk());
 
-        assertEquals(statusRepository.findAll().iterator().next().getName(), TEST_STATUS_NAME2);
+        assertEquals(taskStatusRepository.findAll().iterator().next().getName(), TEST_STATUS_NAME2);
     }
 
 
     @Test
     public void deleteStatus() throws Exception {
         utils.createDefaultStatus();
-        final Long statusId = statusRepository.findAll().iterator().next().getId();
-        String currentUrl = "/api" + STATUS_CONTROLLER_PATH + StatusController.ID;
+        final Long statusId = taskStatusRepository.findAll().iterator().next().getId();
+        String currentUrl = "/api" + TASK_STATUS_CONTROLLER_PATH + TaskStatusController.ID;
         utils.perform(delete(currentUrl, statusId), TEST_EMAIL)
                 .andExpect(status().isOk());
 
-        assertEquals(0, statusRepository.count());
+        assertEquals(0, taskStatusRepository.count());
 
     }
 }

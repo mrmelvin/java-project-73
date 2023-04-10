@@ -22,5 +22,5 @@ public class TaskDto {
     private Long executorId;
 
     @NotNull
-    private Long statusId;
+    private Long taskStatusId;
 }

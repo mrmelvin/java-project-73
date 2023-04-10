@@ -8,14 +8,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.OneToOne;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Temporal;
+import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 import static javax.persistence.TemporalType.TIMESTAMP;
@@ -23,10 +19,10 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Entity
 @Getter
 @Setter
-@Table(name = "STATUSES")
+@Table(name = "TASK_STATUSES")
 @NoArgsConstructor
 @AllArgsConstructor
-public class Status {
+public class TaskStatus {
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
@@ -35,11 +31,15 @@ public class Status {
     @Size(min = 1)
     private String name;
 
-    @OneToOne(mappedBy = "status")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "taskStatus")
     @JsonIgnore
-    private Task task;
+    private List<Task> tasks;
 
     @CreationTimestamp
     @Temporal(TIMESTAMP)
     private Date createdAt;
+
+    public TaskStatus(Long id) {
+        this.id = id;
+    }
 }

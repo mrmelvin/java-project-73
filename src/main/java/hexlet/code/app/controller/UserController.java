@@ -35,9 +35,7 @@ public class UserController {
     public static final String USER_CONTROLLER_PATH = "/users";
     public static final String ID = "/{id}";
 
-    private static final String ONLY_OWNER_BY_ID = """
-            @userRepository.findById(#id).get().getEmail() == authentication.getName()
-        """;
+    private static final String ONLY_OWNER_BY_ID = "@userRepository.findById(#id).get().getEmail() == authentication.getName()";
 
     private final UserService userService;
     private final UserRepository userRepository;

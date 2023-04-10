@@ -1,10 +1,10 @@
 package hexlet.code.app.service;
 
 import hexlet.code.app.dto.TaskDto;
-import hexlet.code.app.model.Status;
+import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.model.Task;
 import hexlet.code.app.model.User;
-import hexlet.code.app.repository.StatusRepository;
+import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class TaskServiceImpl implements TaskService {
 
     private TaskRepository taskRepository;
-    private StatusRepository statusRepository;
+    private TaskStatusRepository taskStatusRepository;
     private UserRepository userRepository;
     private UserServiceImpl userService;
 
@@ -40,8 +40,8 @@ public class TaskServiceImpl implements TaskService {
         final Task taskToUpdate = taskRepository.findById(taskId).get();
         taskToUpdate.setName(taskDto.getName());
         taskToUpdate.setDescription(taskDto.getDescription());
-        Status statusFromDto = statusRepository.findById(taskDto.getStatusId()).get();
-        taskToUpdate.setStatus(statusFromDto);
+        TaskStatus taskStatusFromDto = taskStatusRepository.findById(taskDto.getTaskStatusId()).get();
+        taskToUpdate.setTaskStatus(taskStatusFromDto);
         taskToUpdate.setAuthor(userService.getCurrentUser());
         if (taskDto.getExecutorId() != null) {
             User executorFromDto = userRepository.findById(taskDto.getExecutorId()).get();
@@ -53,18 +53,18 @@ public class TaskServiceImpl implements TaskService {
     private Task fromDto(TaskDto taskDto) {
         User author = userService.getCurrentUser();
         User executorFromDto = null;
-        Status statusFromDto = null;
+        TaskStatus taskStatusFromDto = null;
         if (taskDto.getExecutorId() != null) {
             executorFromDto = userRepository.findById(taskDto.getExecutorId()).get();
         }
-        if (taskDto.getStatusId() != null) {
-            statusFromDto = statusRepository.findById(taskDto.getStatusId()).get();
+        if (taskDto.getTaskStatusId() != null) {
+            taskStatusFromDto = taskStatusRepository.findById(taskDto.getTaskStatusId()).get();
         }
         return Task.builder()
-                    .author(author)
-                    .name(taskDto.getName())
-                    .description(taskDto.getDescription())
-                    .executor(executorFromDto)
-                    .status(statusFromDto).build();
+                .author(author)
+                .name(taskDto.getName())
+                .description(taskDto.getDescription())
+                .executor(executorFromDto)
+                .taskStatus(taskStatusFromDto).build();
     }
 }

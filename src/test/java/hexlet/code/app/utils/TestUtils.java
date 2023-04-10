@@ -3,10 +3,10 @@ package hexlet.code.app.utils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.app.component.JWTHelper;
-import hexlet.code.app.dto.StatusDto;
+import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.dto.UserDto;
 import hexlet.code.app.model.User;
-import hexlet.code.app.repository.StatusRepository;
+import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +19,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import java.util.Map;
 
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
-import static hexlet.code.app.controller.StatusController.STATUS_CONTROLLER_PATH;
+import static hexlet.code.app.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -41,14 +41,14 @@ public class TestUtils {
             "qwerty"
     );
 
-    private final StatusDto testStatusDto = new StatusDto(TEST_STATUS_NAME);
+    private final TaskStatusDto testTaskStatusDto = new TaskStatusDto(TEST_STATUS_NAME);
 
     public UserDto getTestRegistrationDto() {
         return testRegistrationDto;
     }
 
-    public StatusDto getTestStatusDto() {
-        return testStatusDto;
+    public TaskStatusDto getTestStatusDto() {
+        return testTaskStatusDto;
     }
 
     @Autowired
@@ -58,7 +58,7 @@ public class TestUtils {
     private UserRepository userRepository;
 
     @Autowired
-    private StatusRepository statusRepository;
+    private TaskStatusRepository taskStatusRepository;
 
     @Autowired
     private TaskRepository taskRepository;
@@ -68,7 +68,7 @@ public class TestUtils {
 
     public void tearDown() {
         taskRepository.deleteAll();
-        statusRepository.deleteAll();
+        taskStatusRepository.deleteAll();
         userRepository.deleteAll();
     }
 
@@ -89,11 +89,11 @@ public class TestUtils {
     }
 
     public ResultActions createDefaultStatus() throws Exception {
-        return createStatus(testStatusDto);
+        return createStatus(testTaskStatusDto);
     }
 
-    public ResultActions createStatus(final StatusDto dto) throws Exception {
-        final var request = post("/api" + STATUS_CONTROLLER_PATH)
+    public ResultActions createStatus(final TaskStatusDto dto) throws Exception {
+        final var request = post("/api" + TASK_STATUS_CONTROLLER_PATH)
                 .content(asJson(dto))
                 .contentType(APPLICATION_JSON);
         return perform(request, TEST_EMAIL);
