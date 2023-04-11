@@ -1,12 +1,8 @@
 name: Java CI
 
 on:
-  push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+  - push
+  - pull_request
 
 jobs:
   build:
@@ -19,11 +15,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build with Gradle
-        run: chmod +x ./gradlew
         uses: gradle/gradle-build-action@v2
         with:
           arguments: build
-          build-root-directory: app
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v3.0.0
         if: ${{ github.event_name == 'push' }}
