@@ -7,7 +7,6 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
 import org.springframework.stereotype.Repository;
-import com.querydsl.core.types.dsl.SimpleExpression;
 
 import java.util.List;
 import java.util.function.Predicate;
