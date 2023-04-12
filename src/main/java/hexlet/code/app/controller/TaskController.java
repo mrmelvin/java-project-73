@@ -8,6 +8,7 @@ import hexlet.code.app.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.AllArgsConstructor;
+import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +23,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.Valid;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -37,7 +38,8 @@ public class TaskController {
 
     public static final String ID = "/{id}";
 
-    private static final String ONLY_OWNER_BY_ID = "@taskRepository.findById(#id).get().getAuthor().getEmail() == authentication.getName()";
+    private static final String ONLY_OWNER_BY_ID
+            = "@taskRepository.findById(#id).get().getAuthor().getEmail() == authentication.getName()";
 
     private TaskRepository taskRepository;
 
@@ -52,10 +54,8 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<Task> getAll() {
-        List<Task> allTasks = new ArrayList<>();
-        taskRepository.findAll().forEach(allTasks::add);
-        return allTasks;
+    public List<Task> getAll(@QuerydslPredicate(root = Task.class) Predicate predicate) {
+        return taskRepository.findAll(predicate);
     }
 
 

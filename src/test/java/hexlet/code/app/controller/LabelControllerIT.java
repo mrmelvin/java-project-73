@@ -1,12 +1,10 @@
 package hexlet.code.app.controller;
 
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.app.config.SpringConfigForIT;
-import hexlet.code.app.dto.TaskDto;
+import hexlet.code.app.dto.LabelDto;
 import hexlet.code.app.model.Label;
-import hexlet.code.app.model.Task;
-import hexlet.code.app.repository.TaskRepository;
+import hexlet.code.app.repository.LabelRepository;
 import hexlet.code.app.utils.TestUtils;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,11 +16,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import static hexlet.code.app.config.SpringConfigForIT.TEST_PROFILE;
-import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
+import static hexlet.code.app.controller.LabelController.LABEL_CONTROLLER_PATH;
+import static hexlet.code.app.controller.LabelController.ID;
 import static hexlet.code.app.utils.TestUtils.asJson;
 import static hexlet.code.app.utils.TestUtils.fromJson;
 import static hexlet.code.app.utils.TestUtils.TEST_EMAIL;
@@ -37,10 +33,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ActiveProfiles(TEST_PROFILE)
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = SpringConfigForIT.class)
-public class TaskControllerIT {
+public class LabelControllerIT {
 
     @Autowired
-    private TaskRepository taskRepository;
+    private LabelRepository labelRepository;
 
     @Autowired
     private TestUtils utils;
@@ -50,34 +46,33 @@ public class TaskControllerIT {
         utils.regDefaultUser();
     }
 
+
     @AfterEach
     public void clear() {
         utils.tearDown();
     }
 
-
     @Test
-    public void createTask() throws Exception {
-        utils.createDefaultStatus();
+    public void createLabel() throws Exception {
+        LabelDto newLabel = new LabelDto("good_first_issue");
 
-        Set<Label> labels = new HashSet<>();
-        TaskDto newTask = new TaskDto("firstTask", "importantDescription", 1L, 1L, labels);
-        final var request = post("/api" + TASK_CONTROLLER_PATH)
-                                                            .content(asJson(newTask)).contentType(APPLICATION_JSON);
+        final var request = post("/api" + LABEL_CONTROLLER_PATH)
+                .content(asJson(newLabel)).contentType(APPLICATION_JSON);
         utils.perform(request, TEST_EMAIL).andExpect(status().isCreated());
 
-        final Task expectedTask = taskRepository.findAll().iterator().next();
+        final Label expectedLabel = labelRepository.findAll().iterator().next();
+
         final var response = utils.perform(
-                        get("/api/tasks/1",
-                                expectedTask.getId()), TEST_EMAIL)
+                        get("/api" + LABEL_CONTROLLER_PATH + ID,
+                                expectedLabel.getId()), TEST_EMAIL)
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
 
-        final Task task = fromJson(response.getContentAsString(), new TypeReference<>() {
+        final Label label = fromJson(response.getContentAsString(), new TypeReference<>() {
         });
 
-        assertEquals(expectedTask.getName(), task.getName());
+        assertEquals(expectedLabel.getName(), label.getName());
     }
 
 }
