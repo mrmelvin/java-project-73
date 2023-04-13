@@ -50,8 +50,9 @@ public class UserController {
     }
 
 
+    @Operation(summary = "Get list all users")
     @ApiResponses(@ApiResponse(responseCode = "200", content =
-    @Content(schema = @Schema(implementation = User.class))
+                    @Content(schema = @Schema(implementation = User.class))
     ))
     @GetMapping
     public List<User> getAll() {
@@ -60,18 +61,23 @@ public class UserController {
         return allUsers;
     }
 
+    @Operation(summary = "Get single user by id")
     @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping(ID)
     public User getUserById(@PathVariable final Long id) {
         return userRepository.findById(id).get();
     }
 
+    @Operation(summary = "Modificate single user by id")
+    @ApiResponses(@ApiResponse(responseCode = "200"))
     @PutMapping(ID)
     @PreAuthorize(ONLY_OWNER_BY_ID)
     public User update(@PathVariable final long id, @RequestBody @Valid final UserDto dto) {
         return userService.updateUser(id, dto);
     }
 
+    @Operation(summary = "Delete user by id")
+    @ApiResponses(@ApiResponse(responseCode = "200"))
     @DeleteMapping(ID)
     @PreAuthorize(ONLY_OWNER_BY_ID)
     public void delete(@PathVariable final long id) {

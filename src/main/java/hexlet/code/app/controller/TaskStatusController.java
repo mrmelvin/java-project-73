@@ -2,11 +2,15 @@ package hexlet.code.app.controller;
 
 
 import hexlet.code.app.dto.TaskStatusDto;
+import hexlet.code.app.model.Task;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.service.TaskStatusService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,6 +49,9 @@ public class TaskStatusController {
     }
 
 
+    @ApiResponses(@ApiResponse(responseCode = "200", content =
+        @Content(schema = @Schema(implementation = TaskStatus.class))
+    ))
     @GetMapping
     public List<TaskStatus> getAll() {
         List<TaskStatus> allTaskStatuses = new ArrayList<>();
@@ -53,16 +60,19 @@ public class TaskStatusController {
     }
 
 
+    @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping(ID)
     public TaskStatus getTaskStatusById(@PathVariable final Long id) {
         return taskStatusRepository.findById(id).get();
     }
 
+    @ApiResponses(@ApiResponse(responseCode = "200"))
     @PutMapping(ID)
     public TaskStatus update(@PathVariable final long id, @RequestBody @Valid final TaskStatusDto statusDto) {
         return taskStatusService.updateTaskStatus(id, statusDto);
     }
 
+    @ApiResponses(@ApiResponse(responseCode = "200"))
     @DeleteMapping(ID)
     public void delete(@PathVariable final long id) {
         taskStatusRepository.deleteById(id);

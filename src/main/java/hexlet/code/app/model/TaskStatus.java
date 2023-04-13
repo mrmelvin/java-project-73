@@ -34,7 +34,7 @@ public class TaskStatus {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Size(min = 1)
+    @Size(min = 1, max = 256)
     private String name;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "taskStatus")

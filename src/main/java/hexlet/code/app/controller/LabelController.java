@@ -2,10 +2,14 @@ package hexlet.code.app.controller;
 
 import hexlet.code.app.dto.LabelDto;
 import hexlet.code.app.model.Label;
+import hexlet.code.app.model.User;
 import hexlet.code.app.repository.LabelRepository;
 import hexlet.code.app.service.LabelService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,6 +46,9 @@ public class LabelController {
         return labelService.createLabel(labelDto);
     }
 
+    @ApiResponses(@ApiResponse(responseCode = "200", content =
+        @Content(schema = @Schema(implementation = Label.class))
+    ))
     @GetMapping
     public List<Label> getAll() {
         List<Label> allLabels = new ArrayList<>();
@@ -50,16 +57,19 @@ public class LabelController {
     }
 
 
+    @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping(ID)
     public Label getLabelById(@PathVariable final Long id) {
         return labelRepository.findById(id).get();
     }
 
+    @ApiResponses(@ApiResponse(responseCode = "200"))
     @PutMapping(ID)
     public Label update(@PathVariable final long id, @RequestBody @Valid final LabelDto statusDto) {
         return labelService.updateLabel(id, statusDto);
     }
 
+    @ApiResponses(@ApiResponse(responseCode = "200"))
     @DeleteMapping(ID)
     public void delete(@PathVariable final long id) {
         labelRepository.deleteById(id);

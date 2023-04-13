@@ -3,11 +3,16 @@ package hexlet.code.app.controller;
 
 import hexlet.code.app.dto.TaskDto;
 import hexlet.code.app.model.Task;
+import hexlet.code.app.model.User;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
+import org.hibernate.annotations.Parameter;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +28,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.Valid;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -53,23 +59,35 @@ public class TaskController {
         return taskService.createNewTask(taskDto);
     }
 
+//    @GetMapping
+//    public List<Task> getAll(@QuerydslPredicate Predicate predicate) {
+//        return predicate == null ? taskRepository.findAll() : taskRepository.findAll(predicate);
+//    }
+
+    @ApiResponses(@ApiResponse(responseCode = "200", content =
+            @Content(schema = @Schema(implementation = Task.class))
+    ))
     @GetMapping
-    public List<Task> getAll(@QuerydslPredicate(root = Task.class) Predicate predicate) {
-        return taskRepository.findAll(predicate);
+    public List<Task> getAll() {
+        List<Task> allTasks = new ArrayList<>();
+        taskRepository.findAll().forEach(allTasks::add);
+        return allTasks;
     }
 
-
+    @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping(ID)
     public Task getTaskById(@PathVariable final Long id) {
         return taskRepository.findById(id).get();
     }
 
+    @ApiResponses(@ApiResponse(responseCode = "200"))
     @PutMapping(ID)
     @PreAuthorize(ONLY_OWNER_BY_ID)
     public Task update(@PathVariable final long id, @RequestBody @Valid final TaskDto taskDto) {
         return taskService.updateTask(id, taskDto);
     }
 
+    @ApiResponses(@ApiResponse(responseCode = "200"))
     @DeleteMapping(ID)
     @PreAuthorize(ONLY_OWNER_BY_ID)
     public void delete(@PathVariable final long id) {

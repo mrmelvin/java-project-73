@@ -1,5 +1,6 @@
 package hexlet.code.app.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -35,9 +36,10 @@ public class Label {
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
 
-    @Size(min = 1)
+    @Size(min = 1, max = 256)
     private String name;
 
+    @JsonIgnore
     @ManyToMany(cascade = CascadeType.ALL)
     private List<Task> tasks;
 

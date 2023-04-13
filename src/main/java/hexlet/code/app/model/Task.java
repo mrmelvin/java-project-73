@@ -36,7 +36,7 @@ public class Task {
     private Long id;
 
     @NotNull
-    @Size(min = 1)
+    @Size(min = 1, max = 256)
     private String name;
 
     private String description;
