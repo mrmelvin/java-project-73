@@ -1,9 +1,7 @@
 package hexlet.code.app.dto;
 
 import hexlet.code.app.model.Label;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -11,6 +9,8 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 
 @Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskDto {
@@ -26,5 +26,5 @@ public class TaskDto {
     @NotNull
     private Long taskStatusId;
 
-    private Set<Label> labels;
+    private Set<Long> labelIds;
 }

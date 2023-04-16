@@ -3,6 +3,7 @@ package hexlet.code.app.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import hexlet.code.app.config.SpringConfigForIT;
 import hexlet.code.app.dto.LabelDto;
+import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.model.Label;
 import hexlet.code.app.repository.LabelRepository;
 import hexlet.code.app.utils.TestUtils;
@@ -19,14 +20,13 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static hexlet.code.app.config.SpringConfigForIT.TEST_PROFILE;
 import static hexlet.code.app.controller.LabelController.LABEL_CONTROLLER_PATH;
 import static hexlet.code.app.controller.LabelController.ID;
-import static hexlet.code.app.utils.TestUtils.asJson;
-import static hexlet.code.app.utils.TestUtils.fromJson;
-import static hexlet.code.app.utils.TestUtils.TEST_EMAIL;
+import static hexlet.code.app.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
+import static hexlet.code.app.utils.TestUtils.*;
+import static hexlet.code.app.utils.TestUtils.TEST_TASKSTATUS_NAME2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -75,4 +75,30 @@ public class LabelControllerIT {
         assertEquals(expectedLabel.getName(), label.getName());
     }
 
+    @Test
+    public void updateLabel() throws Exception {
+        utils.createDefaultLabel();
+
+        final Long labelId = labelRepository.findAll().iterator().next().getId();
+        final var label = new TaskStatusDto(TEST_LABEL2);
+
+        String currentUrl = "/api" + LABEL_CONTROLLER_PATH + LabelController.ID;
+        final var updateRequest = put(currentUrl, labelId)
+                .content(asJson(label))
+                .contentType(APPLICATION_JSON);
+        utils.perform(updateRequest, TEST_EMAIL).andExpect(status().isOk());
+
+        assertEquals(labelRepository.findAll().iterator().next().getName(), TEST_LABEL2);
+    }
+
+    @Test
+    public void deleteLabel() throws Exception {
+        utils.createDefaultLabel();
+        final Long labelId = labelRepository.findAll().iterator().next().getId();
+        String currentUrl = "/api" + LABEL_CONTROLLER_PATH + LabelController.ID;
+        utils.perform(delete(currentUrl, labelId), TEST_EMAIL)
+                .andExpect(status().isOk());
+
+        assertEquals(0, labelRepository.count());
+    }
 }

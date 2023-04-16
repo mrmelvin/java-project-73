@@ -1,6 +1,8 @@
 package hexlet.code.app.service;
 
+
 import hexlet.code.app.dto.TaskStatusDto;
+import hexlet.code.app.model.Task;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.repository.TaskStatusRepository;
 import lombok.AllArgsConstructor;
@@ -16,16 +18,26 @@ public class TaskStatusServiceImpl implements TaskStatusService {
 
 
     @Override
-    public TaskStatus createNewTaskStatus(TaskStatusDto taskStatusDto) {
-        final TaskStatus status = new TaskStatus();
-        status.setName(taskStatusDto.getName());
-        return taskStatusRepository.save(status);
+    public TaskStatus createNewTaskStatus(TaskStatusDto dto) {
+        final TaskStatus taskStatus = fromDto(dto);
+        return taskStatusRepository.save(taskStatus);
     }
 
     @Override
-    public TaskStatus updateTaskStatus(Long statusId, TaskStatusDto taskStatusDto) {
-        final TaskStatus status = taskStatusRepository.findById(statusId).get();
-        status.setName(taskStatusDto.getName());
-        return taskStatusRepository.save(status);
+    public TaskStatus updateTaskStatus(Long statusId, TaskStatusDto dto) {
+        final TaskStatus taskStatus = taskStatusRepository.findById(statusId).get();
+        merge(taskStatus, dto);
+        return taskStatusRepository.save(taskStatus);
+    }
+
+    private void merge(final TaskStatus taskStatus, final TaskStatusDto dto) {
+        final TaskStatus newTaskStatus = fromDto(dto);
+        taskStatus.setName(newTaskStatus.getName());
+    }
+
+    private TaskStatus fromDto(final TaskStatusDto dto) {
+        return TaskStatus.builder()
+                .name(dto.getName())
+                .build();
     }
 }

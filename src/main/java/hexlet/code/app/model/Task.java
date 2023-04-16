@@ -6,25 +6,24 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.ManyToOne;
-import javax.persistence.ManyToMany;
-import javax.persistence.Temporal;
+
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import static javax.persistence.CascadeType.MERGE;
+import static javax.persistence.CascadeType.PERSIST;
 import static javax.persistence.GenerationType.IDENTITY;
 import static javax.persistence.TemporalType.TIMESTAMP;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "TASKS")
+@Table(name = "tasks")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -52,7 +51,19 @@ public class Task {
     @ManyToOne
     private User executor;
 
-    @ManyToMany
+//    @ManyToMany(cascade = {
+//            CascadeType.PERSIST,
+//            CascadeType.MERGE
+//    })
+//    @JoinTable(name = "task_label",
+//                joinColumns = {@JoinColumn(name = "task_id")},
+//                inverseJoinColumns = {@JoinColumn(name = "label_id")})
+//    private Set<Label> labels = new HashSet<>();
+    @ManyToMany(cascade = {PERSIST, MERGE})
+    @JoinTable(name = "task_label",
+                joinColumns = @JoinColumn(name = "task_id"),
+                inverseJoinColumns = @JoinColumn(name = "label_id")
+    )
     private Set<Label> labels;
 
     @CreationTimestamp

@@ -18,7 +18,9 @@ import javax.persistence.CascadeType;
 import javax.validation.constraints.Size;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 import static javax.persistence.TemporalType.TIMESTAMP;
@@ -26,7 +28,7 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Entity
 @Getter
 @Setter
-@Table(name = "LABELS")
+@Table(name = "labels")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -39,13 +41,13 @@ public class Label {
     @Size(min = 1, max = 256)
     private String name;
 
-    @JsonIgnore
-    @ManyToMany(cascade = CascadeType.ALL)
-    private List<Task> tasks;
-
     @CreationTimestamp
     @Temporal(TIMESTAMP)
     private Date createdAt;
+
+//    @ManyToMany(mappedBy = "labels")
+//    @JsonIgnore
+//    private Set<Task> tasks = new HashSet<>();
 
     public Label(Long id) {
         this.id = id;

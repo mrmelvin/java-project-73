@@ -6,6 +6,7 @@ import hexlet.code.app.config.SpringConfigForIT;
 import hexlet.code.app.dto.TaskDto;
 import hexlet.code.app.model.Label;
 import hexlet.code.app.model.Task;
+import hexlet.code.app.repository.LabelRepository;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.utils.TestUtils;
 import org.junit.jupiter.api.AfterEach;
@@ -43,6 +44,9 @@ public class TaskControllerIT {
     private TaskRepository taskRepository;
 
     @Autowired
+    private LabelRepository labelRepository;
+
+    @Autowired
     private TestUtils utils;
 
     @BeforeEach
@@ -58,10 +62,13 @@ public class TaskControllerIT {
 
     @Test
     public void createTask() throws Exception {
-        utils.createDefaultStatus();
+        utils.createDefaultTaskStatus();
+        utils.createDefaultLabel();
 
-        Set<Label> labels = new HashSet<>();
-        TaskDto newTask = new TaskDto("firstTask", "importantDescription", 1L, 1L, labels);
+        Set<Long> labelIds = new HashSet<>();
+        labelIds.add(1L);
+
+        TaskDto newTask = new TaskDto("firstTask", "importantDescription", 1L, 1L, labelIds);
         final var request = post("/api" + TASK_CONTROLLER_PATH)
                                                             .content(asJson(newTask)).contentType(APPLICATION_JSON);
         utils.perform(request, TEST_EMAIL).andExpect(status().isCreated());
@@ -78,6 +85,11 @@ public class TaskControllerIT {
         });
 
         assertEquals(expectedTask.getName(), task.getName());
+    }
+
+    @Test
+    public void updateTask() throws Exception {
+
     }
 
 }

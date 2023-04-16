@@ -30,7 +30,7 @@ import javax.validation.Valid;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
+import com.querydsl.core.types.Predicate;
 
 import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
 import static org.springframework.http.HttpStatus.CREATED;
@@ -59,19 +59,13 @@ public class TaskController {
         return taskService.createNewTask(taskDto);
     }
 
-//    @GetMapping
-//    public List<Task> getAll(@QuerydslPredicate Predicate predicate) {
-//        return predicate == null ? taskRepository.findAll() : taskRepository.findAll(predicate);
-//    }
 
     @ApiResponses(@ApiResponse(responseCode = "200", content =
             @Content(schema = @Schema(implementation = Task.class))
     ))
     @GetMapping
-    public List<Task> getAll() {
-        List<Task> allTasks = new ArrayList<>();
-        taskRepository.findAll().forEach(allTasks::add);
-        return allTasks;
+    public Iterable<Task> getAll(@QuerydslPredicate Predicate predicate) {
+        return predicate == null ? taskRepository.findAll() : taskRepository.findAll(predicate);
     }
 
     @ApiResponses(@ApiResponse(responseCode = "200"))

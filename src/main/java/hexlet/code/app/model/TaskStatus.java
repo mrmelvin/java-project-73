@@ -2,10 +2,7 @@ package hexlet.code.app.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.Entity;
@@ -25,7 +22,8 @@ import static javax.persistence.TemporalType.TIMESTAMP;
 @Entity
 @Getter
 @Setter
-@Table(name = "TASK_STATUSES")
+@Table(name = "task_statuses")
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskStatus {
