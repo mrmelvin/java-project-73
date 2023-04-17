@@ -3,7 +3,6 @@ package hexlet.code.app.controller;
 
 import hexlet.code.app.dto.TaskDto;
 import hexlet.code.app.model.Task;
-import hexlet.code.app.model.User;
 import hexlet.code.app.repository.TaskRepository;
 import hexlet.code.app.service.TaskService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.AllArgsConstructor;
-import org.hibernate.annotations.Parameter;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,8 +26,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.Valid;
 
-import java.util.ArrayList;
-import java.util.List;
+
 import com.querydsl.core.types.Predicate;
 
 import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;

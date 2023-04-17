@@ -2,7 +2,6 @@ package hexlet.code.app.controller;
 
 
 import hexlet.code.app.dto.TaskStatusDto;
-import hexlet.code.app.model.Task;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.repository.TaskStatusRepository;
 import hexlet.code.app.service.TaskStatusService;

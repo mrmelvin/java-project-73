@@ -1,7 +1,10 @@
 package hexlet.code.app.dto;
 
-import hexlet.code.app.model.Label;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

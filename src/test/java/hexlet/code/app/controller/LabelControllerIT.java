@@ -20,13 +20,17 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import static hexlet.code.app.config.SpringConfigForIT.TEST_PROFILE;
 import static hexlet.code.app.controller.LabelController.LABEL_CONTROLLER_PATH;
 import static hexlet.code.app.controller.LabelController.ID;
-import static hexlet.code.app.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
-import static hexlet.code.app.utils.TestUtils.*;
-import static hexlet.code.app.utils.TestUtils.TEST_TASKSTATUS_NAME2;
+import static hexlet.code.app.utils.TestUtils.fromJson;
+import static hexlet.code.app.utils.TestUtils.asJson;
+import static hexlet.code.app.utils.TestUtils.TEST_EMAIL;
+import static hexlet.code.app.utils.TestUtils.TEST_LABEL2;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc

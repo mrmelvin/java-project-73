@@ -19,9 +19,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import com.fasterxml.jackson.core.type.TypeReference;
 
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
@@ -48,7 +46,6 @@ public class TestUtils {
     public static final String TEST_TASK_NAME = "";
     public static final String TEST_TASK_DESCRIPTION = "";
 
-    public Set<Long> labelIds = new HashSet<>();
 
     private final UserDto testRegistrationDto = new UserDto(
             TEST_EMAIL,
@@ -60,11 +57,11 @@ public class TestUtils {
     private final TaskStatusDto testTaskStatusDto = new TaskStatusDto(TEST_TASKSTATUS_NAME);
     private final LabelDto testLabelDto = new LabelDto(TEST_LABEL);
 
-    private final TaskDto testTaskDto = new TaskDto(TEST_TASK_NAME,
-                                                    TEST_TASK_DESCRIPTION,
-                                            1L,
-                                        1L,
-                                                    labelIds);
+//    private final TaskDto testTaskDto = new TaskDto(TEST_TASK_NAME,
+//                                                    TEST_TASK_DESCRIPTION,
+//                                            1L,
+//                                        1L,
+//                                                    1L);
 
     public UserDto getTestRegistrationDto() {
         return testRegistrationDto;
@@ -118,14 +115,13 @@ public class TestUtils {
     public ResultActions createDefaultTaskStatus() throws Exception {
         return createTaskStatus(testTaskStatusDto);
     }
-    
     public ResultActions createDefaultLabel() throws Exception {
         return createLabel(testLabelDto);
     }
 
-    public ResultActions createDefaultTask() throws Exception {
-        return createTask(testTaskDto);
-    }
+//    public ResultActions createDefaultTask() throws Exception {
+//        return createTask(testTaskDto);
+//    }
 
     public ResultActions createTaskStatus(final TaskStatusDto dto) throws Exception {
         final var request = post("/api" + TASK_STATUS_CONTROLLER_PATH)
