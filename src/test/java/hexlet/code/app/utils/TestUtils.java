@@ -7,6 +7,8 @@ import hexlet.code.app.dto.LabelDto;
 import hexlet.code.app.dto.TaskDto;
 import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.dto.UserDto;
+import hexlet.code.app.model.Label;
+import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.model.User;
 import hexlet.code.app.repository.LabelRepository;
 import hexlet.code.app.repository.TaskStatusRepository;
@@ -20,6 +22,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.Map;
+import java.util.Set;
 
 import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
 import static hexlet.code.app.controller.UserController.USER_CONTROLLER_PATH;
@@ -43,8 +46,10 @@ public class TestUtils {
     public static final String TEST_LABEL = "good first issue";
     public static final String TEST_LABEL2 = "wontfix";
 
-    public static final String TEST_TASK_NAME = "";
-    public static final String TEST_TASK_DESCRIPTION = "";
+    public static final String TEST_TASK_NAME = "First_Test_Task";
+    public static final String TEST_TASK_NAME2 = "Second_Test_Task";
+    public static final String TEST_TASK_DESCRIPTION = "Lorem_Ipsum";
+    public static final String TEST_TASK_DESCRIPTION2 = "Sed ut perspiciatis unde omnis iste natus";
 
 
     private final UserDto testRegistrationDto = new UserDto(
@@ -57,11 +62,6 @@ public class TestUtils {
     private final TaskStatusDto testTaskStatusDto = new TaskStatusDto(TEST_TASKSTATUS_NAME);
     private final LabelDto testLabelDto = new LabelDto(TEST_LABEL);
 
-//    private final TaskDto testTaskDto = new TaskDto(TEST_TASK_NAME,
-//                                                    TEST_TASK_DESCRIPTION,
-//                                            1L,
-//                                        1L,
-//                                                    1L);
 
     public UserDto getTestRegistrationDto() {
         return testRegistrationDto;
@@ -119,9 +119,20 @@ public class TestUtils {
         return createLabel(testLabelDto);
     }
 
-//    public ResultActions createDefaultTask() throws Exception {
-//        return createTask(testTaskDto);
-//    }
+    public ResultActions createDefaultTask() throws Exception {
+        regDefaultUser();
+        createDefaultTaskStatus();
+        createDefaultLabel();
+        final User user = userRepository.findAll().get(0);
+        final TaskStatus taskStatus = taskStatusRepository.findAll().get(0);
+        final Label label = labelRepository.findAll().get(0);
+        final TaskDto dto = new TaskDto(TEST_TASK_NAME,
+                                        TEST_TASK_DESCRIPTION,
+                                        user.getId(),
+                                        taskStatus.getId(),
+                                        Set.of(label.getId()));
+        return createTask(dto);
+    }
 
     public ResultActions createTaskStatus(final TaskStatusDto dto) throws Exception {
         final var request = post("/api" + TASK_STATUS_CONTROLLER_PATH)
