@@ -57,14 +57,6 @@ public class Task {
     @ManyToOne
     private User executor;
 
-//    @ManyToMany(cascade = {
-//            CascadeType.PERSIST,
-//            CascadeType.MERGE
-//    })
-//    @JoinTable(name = "task_label",
-//                joinColumns = {@JoinColumn(name = "task_id")},
-//                inverseJoinColumns = {@JoinColumn(name = "label_id")})
-//    private Set<Label> labels = new HashSet<>();
     @ManyToMany(cascade = {PERSIST, MERGE})
     @JoinTable(name = "task_label",
                 joinColumns = @JoinColumn(name = "task_id"),

@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Value;
 @ComponentScan({"hexlet.code.app"})
 public class RollbarConfig {
 
-    // Добавляем токен через переменные окружения
     @Value("${rollbar_token:}")
     private String rollbarToken;
 

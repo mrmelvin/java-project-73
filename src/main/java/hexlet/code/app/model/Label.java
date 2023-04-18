@@ -40,10 +40,6 @@ public class Label {
     @Temporal(TIMESTAMP)
     private Date createdAt;
 
-//    @ManyToMany(mappedBy = "labels")
-//    @JsonIgnore
-//    private Set<Task> tasks = new HashSet<>();
-
     public Label(Long id) {
         this.id = id;
     }

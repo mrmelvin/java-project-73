@@ -67,8 +67,7 @@ public class TaskStatusControllerIT {
 
         final TaskStatus expectedStatus = taskStatusRepository.findAll().iterator().next();
         final var response = utils.perform(
-                        get("/api" + TASK_STATUS_CONTROLLER_PATH + ID,
-                                expectedStatus.getId()), TEST_EMAIL)
+                        get("/api" + TASK_STATUS_CONTROLLER_PATH + ID, expectedStatus.getId()), TEST_EMAIL)
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse();
