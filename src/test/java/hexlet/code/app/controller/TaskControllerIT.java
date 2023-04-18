@@ -15,7 +15,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import hexlet.code.app.dto.TaskStatusDto;
 import hexlet.code.app.model.Label;
 import hexlet.code.app.model.TaskStatus;
 import hexlet.code.app.model.User;
@@ -32,7 +31,8 @@ import static hexlet.code.app.utils.TestUtils.TEST_EMAIL;
 import static hexlet.code.app.utils.TestUtils.TEST_TASK_NAME2;
 import static hexlet.code.app.utils.TestUtils.TEST_TASK_DESCRIPTION2;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static hexlet.code.app.controller.TaskController.TASK_CONTROLLER_PATH;
