@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 import static hexlet.code.controller.LabelController.LABEL_CONTROLLER_PATH;
@@ -51,9 +50,7 @@ public class LabelController {
     ))
     @GetMapping
     public List<Label> getAll() {
-        List<Label> allLabels = new ArrayList<>();
-        labelRepository.findAll().stream().toList();
-        return allLabels;
+        return labelRepository.findAll().stream().toList();
     }
 
 
