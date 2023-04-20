@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -56,9 +55,7 @@ public class UserController {
     ))
     @GetMapping
     public List<User> getAll() {
-        List<User> allUsers = new ArrayList<>();
-        userRepository.findAll().forEach(allUsers::add);
-        return allUsers;
+        return userRepository.findAll().stream().toList();
     }
 
     @Operation(summary = "Get single user by id")

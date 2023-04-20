@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.validation.Valid;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static hexlet.code.controller.TaskStatusController.TASK_STATUS_CONTROLLER_PATH;
@@ -53,9 +52,7 @@ public class TaskStatusController {
     ))
     @GetMapping
     public List<TaskStatus> getAll() {
-        List<TaskStatus> allTaskStatuses = new ArrayList<>();
-        taskStatusRepository.findAll().forEach(allTaskStatuses::add);
-        return allTaskStatuses;
+        return taskStatusRepository.findAll().stream().toList();
     }
 
 

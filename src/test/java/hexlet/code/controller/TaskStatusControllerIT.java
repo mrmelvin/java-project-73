@@ -23,6 +23,7 @@ import static hexlet.code.utils.TestUtils.asJson;
 import static hexlet.code.utils.TestUtils.fromJson;
 import static hexlet.code.utils.TestUtils.TEST_EMAIL;
 import static hexlet.code.utils.TestUtils.TEST_TASKSTATUS_NAME2;
+import static hexlet.code.utils.TestUtils.BASIC_URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -36,6 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = SpringConfigForIT.class)
 public class TaskStatusControllerIT {
+
 
     @Autowired
     private TaskStatusRepository taskStatusRepository;
@@ -58,12 +60,12 @@ public class TaskStatusControllerIT {
     @Test
     public void createTaskStatus() throws Exception {
         TaskStatusDto newStatus = new TaskStatusDto("testNewStatus");
-        final var request = MockMvcRequestBuilders.post("/api" + TaskStatusController.TASK_STATUS_CONTROLLER_PATH)
+        final var request = MockMvcRequestBuilders.post(BASIC_URL + TaskStatusController.TASK_STATUS_CONTROLLER_PATH)
                                                             .content(asJson(newStatus)).contentType(APPLICATION_JSON);
         utils.perform(request, TEST_EMAIL).andExpect(status().isCreated());
 
         final TaskStatus expectedStatus = taskStatusRepository.findAll().iterator().next();
-        String currentUrl = "/api" + TaskStatusController.TASK_STATUS_CONTROLLER_PATH + TaskStatusController.ID;
+        String currentUrl = BASIC_URL + TaskStatusController.TASK_STATUS_CONTROLLER_PATH + TaskStatusController.ID;
         final var response = utils.perform(
                         MockMvcRequestBuilders.get(currentUrl, expectedStatus.getId()), TEST_EMAIL)
                 .andExpect(status().isOk())
@@ -84,7 +86,7 @@ public class TaskStatusControllerIT {
         final Long taskStatusId = taskStatusRepository.findAll().iterator().next().getId();
         final var status = new TaskStatusDto(TEST_TASKSTATUS_NAME2);
 
-        String currentUrl = "/api" + TaskStatusController.TASK_STATUS_CONTROLLER_PATH + TaskStatusController.ID;
+        String currentUrl = BASIC_URL + TaskStatusController.TASK_STATUS_CONTROLLER_PATH + TaskStatusController.ID;
         final var updateRequest = put(currentUrl, taskStatusId)
                 .content(asJson(status))
                 .contentType(APPLICATION_JSON);
@@ -98,7 +100,7 @@ public class TaskStatusControllerIT {
     public void deleteTaskStatus() throws Exception {
         utils.createDefaultTaskStatus();
         final Long taskStatusId = taskStatusRepository.findAll().iterator().next().getId();
-        String currentUrl = "/api" + TaskStatusController.TASK_STATUS_CONTROLLER_PATH + TaskStatusController.ID;
+        String currentUrl = BASIC_URL + TaskStatusController.TASK_STATUS_CONTROLLER_PATH + TaskStatusController.ID;
         utils.perform(delete(currentUrl, taskStatusId), TEST_EMAIL)
                 .andExpect(status().isOk());
 

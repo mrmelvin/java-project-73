@@ -24,7 +24,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 import java.util.Set;
 
-
+import static hexlet.code.utils.TestUtils.BASIC_URL;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -41,6 +41,8 @@ import static org.springframework.boot.test.context.SpringBootTest.WebEnvironmen
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = RANDOM_PORT, classes = SpringConfigForIT.class)
 public class TaskControllerIT {
+
+
 
     @Autowired
     private TaskRepository taskRepository;
@@ -72,7 +74,7 @@ public class TaskControllerIT {
     public void createTask() throws Exception {
         utils.createDefaultTask();
         final Task expectedTask = taskRepository.findAll().get(0);
-        String currentUrl = "/api" + TASK_CONTROLLER_PATH + ID;
+        String currentUrl = BASIC_URL + TASK_CONTROLLER_PATH + ID;
         final var response = utils.perform(get(currentUrl, expectedTask.getId()), TestUtils.TEST_EMAIL)
                                                         .andExpect(status().isOk())
                                                         .andReturn()
@@ -99,7 +101,7 @@ public class TaskControllerIT {
                 taskStatus.getId(),
                 Set.of(label.getId()));
 
-        String currentUrl = "/api" + TASK_CONTROLLER_PATH + ID;
+        String currentUrl = BASIC_URL + TASK_CONTROLLER_PATH + ID;
         final var updateRequest = put(currentUrl, taskId)
                 .content(TestUtils.asJson(newTask))
                 .contentType(APPLICATION_JSON);
@@ -122,7 +124,7 @@ public class TaskControllerIT {
     public void deleteTaskStatus() throws Exception {
         utils.createDefaultTask();
         final Long taskId = taskRepository.findAll().get(0).getId();
-        String currentUrl = "/api" + TASK_CONTROLLER_PATH + TaskController.ID;
+        String currentUrl = BASIC_URL + TASK_CONTROLLER_PATH + TaskController.ID;
         utils.perform(delete(currentUrl, taskId), TestUtils.TEST_EMAIL)
                 .andExpect(status().isOk());
 

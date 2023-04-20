@@ -37,6 +37,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @Component
 public class TestUtils {
 
+    public static final String BASIC_URL = "/api";
     public static final String TEST_EMAIL = "johndoe@yahoo.com";
     public static final String TEST_EMAIL2 = "jackfrost@hotmail.org";
 
@@ -128,31 +129,31 @@ public class TestUtils {
         final TaskStatus taskStatus = taskStatusRepository.findAll().get(0);
         final Label label = labelRepository.findAll().get(0);
         final TaskDto dto = new TaskDto(TEST_TASK_NAME,
-                                        TEST_TASK_DESCRIPTION,
-                                        user.getId(),
-                                        taskStatus.getId(),
-                                        Set.of(label.getId()));
+                TEST_TASK_DESCRIPTION,
+                user.getId(),
+                taskStatus.getId(),
+                Set.of(label.getId()));
         return createTask(dto);
     }
 
     public ResultActions createTaskStatus(final TaskStatusDto dto) throws Exception {
-        final var request = MockMvcRequestBuilders.post("/api" + TaskStatusController.TASK_STATUS_CONTROLLER_PATH)
-                                                            .content(asJson(dto))
-                                                            .contentType(APPLICATION_JSON);
+        final var request = MockMvcRequestBuilders.post(BASIC_URL + TaskStatusController.TASK_STATUS_CONTROLLER_PATH)
+                .content(asJson(dto))
+                .contentType(APPLICATION_JSON);
         return perform(request, TEST_EMAIL);
     }
 
     public ResultActions createLabel(final LabelDto dto) throws Exception {
-        final var request = post("/api" + LABEL_CONTROLLER_PATH)
-                                                            .content(asJson(dto))
-                                                            .contentType(APPLICATION_JSON);
+        final var request = post(BASIC_URL + LABEL_CONTROLLER_PATH)
+                .content(asJson(dto))
+                .contentType(APPLICATION_JSON);
         return perform(request, TEST_EMAIL);
     }
 
     public ResultActions createTask(final TaskDto dto) throws Exception {
-        final var request = post("/api" + TASK_CONTROLLER_PATH)
-                                                        .content(asJson(dto))
-                                                        .contentType(APPLICATION_JSON);
+        final var request = post(BASIC_URL + TASK_CONTROLLER_PATH)
+                .content(asJson(dto))
+                .contentType(APPLICATION_JSON);
         return perform(request, TEST_EMAIL);
     }
 
