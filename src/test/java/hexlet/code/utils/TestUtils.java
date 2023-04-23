@@ -39,6 +39,9 @@ public class TestUtils {
 
     public static final String BASIC_URL = "/api";
     public static final String TEST_EMAIL = "johndoe@yahoo.com";
+    public static final String TEST_FIRST_NAME = "john";
+    public static final String TEST_LAST_NAME = "doe";
+    public static final String TEST_PASSWORD = "qwerty";
     public static final String TEST_EMAIL2 = "jackfrost@hotmail.org";
 
     public static final String TEST_TASKSTATUS_NAME = "newestStatus";
@@ -56,9 +59,9 @@ public class TestUtils {
 
     private final UserDto testRegistrationDto = new UserDto(
             TEST_EMAIL,
-            "john",
-            "doe",
-            "qwerty"
+            TEST_FIRST_NAME,
+            TEST_LAST_NAME,
+            TEST_PASSWORD
     );
 
     private final TaskStatusDto testTaskStatusDto = new TaskStatusDto(TEST_TASKSTATUS_NAME);
