@@ -2,6 +2,9 @@ package hexlet.code;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import com.rollbar.notifier.Rollbar;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
@@ -24,6 +27,8 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 @ControllerAdvice
 public class BaseExceptionHandler {
 
+    @Autowired
+    private Rollbar rollbar;
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public String generalExceptionHandler(Exception exception) {
@@ -33,6 +38,7 @@ public class BaseExceptionHandler {
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(NoSuchElementException.class)
     public String noSuchElementExceptionHandler(NoSuchElementException exception) {
+        rollbar.error("Not found!");
         return exception.getMessage();
     }
 
