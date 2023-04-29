@@ -13,7 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 @ComponentScan({"hexlet.code", "com.rollbar.spring"})
 public class RollbarConfig {
 
-    @Value("${rollbar_token:}")
+    @Value("${ROLLBAR_TOKEN:}")
     private String rollbarToken;
 
     @Value("${spring.profiles.active:}")
