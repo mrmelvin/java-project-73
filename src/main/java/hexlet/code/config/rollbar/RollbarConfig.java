@@ -10,18 +10,16 @@ import org.springframework.beans.factory.annotation.Value;
 
 
 @Configuration
-@ComponentScan({"hexlet.code", "com.rollbar.spring"})
+@ComponentScan({"hexlet.code.app", "com.rollbar.spring"})
 public class RollbarConfig {
 
-    @Value("${ROLLBAR_TOKEN:}")
+    @Value("${rollbar_token:}")
     private String rollbarToken;
 
     @Value("${spring.profiles.active:}")
     private String activeProfile;
 
-    /**
-     * Register a Rollbar bean to configure App with Rollbar.
-     */
+
     @Bean
     public Rollbar rollbar() {
 

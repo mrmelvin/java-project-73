@@ -56,6 +56,11 @@
         <property name="optional" value="true"/>
     </module>
 
+    <module name="SuppressionSingleFilter">
+        <property name="files" value=".*[\\/]frontend[\\/]"/>
+        <property name="checks" value=".*"/>
+    </module>
+
     <!-- Checks that a package-info.java file exists for each package.     -->
     <!-- See https://checkstyle.org/config_javadoc.html#JavadocPackage -->
     <!-- <module name="JavadocPackage"/> -->
