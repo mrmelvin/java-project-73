@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 
 
 @Configuration
-@ComponentScan({"hexlet.code.app", "com.rollbar.spring"})
+@ComponentScan({"hexlet.code", "com.rollbar.spring"})
 public class RollbarConfig {
 
     @Value("${rollbar_token:}")
@@ -30,7 +30,7 @@ public class RollbarConfig {
 
         return RollbarSpringConfigBuilder.withAccessToken(accessToken)
                 .environment("development")
-                .enabled(activeProfile == "prod")
+                .enabled(activeProfile.equals("prod"))
                 .build();
     }
 }
