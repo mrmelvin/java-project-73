@@ -2,7 +2,6 @@ server:
   port: ${PORT:5000}
 
 base-url: /api
-ROLLBAR_TOKEN: c35649e10a3e4db4af846ae8d5df1666
 
 spring:
   application:
