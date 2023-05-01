@@ -32,49 +32,49 @@ public class BaseExceptionHandler {
     @ResponseStatus(INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public String generalExceptionHandler(Exception exception) {
-        rollbar.debug("Page Not found!");
+        rollbar.error("Internal Error");
         return exception.getMessage();
     }
 
     @ResponseStatus(NOT_FOUND)
     @ExceptionHandler(NoSuchElementException.class)
     public String noSuchElementExceptionHandler(NoSuchElementException exception) {
-        rollbar.debug("Page Not found!");
+        rollbar.error("Page Not found!");
         return exception.getMessage();
     }
 
     @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler({HttpMessageNotReadableException.class})
     public String validationExceptionsHandler(Exception exception) {
-        rollbar.debug("Bad request");
+        rollbar.error("Bad request");
         return exception.getMessage();
     }
 
     @ResponseStatus(UNPROCESSABLE_ENTITY)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public List<ObjectError> validationExceptionsHandler(MethodArgumentNotValidException exception) {
-        rollbar.debug("Incorrect JSON request body");
+        rollbar.error("Incorrect JSON request body");
         return exception.getAllErrors();
     }
 
     @ResponseStatus(UNPROCESSABLE_ENTITY)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public String validationExceptionsHandler(DataIntegrityViolationException exception) {
-        rollbar.debug("Incorrect JSON request body");
+        rollbar.error("Incorrect JSON request body");
         return exception.getCause().getCause().getMessage();
     }
 
     @ResponseStatus(FORBIDDEN)
     @ExceptionHandler(AccessDeniedException.class)
     public String accessDeniedException(AccessDeniedException exception) {
-        rollbar.debug("Access denied");
+        rollbar.error("Access denied");
         return exception.getMessage();
     }
 
     @ResponseStatus(UNAUTHORIZED)
     @ExceptionHandler(UsernameNotFoundException.class)
     public String userNitFoundExceptionHandler(UsernameNotFoundException exception) {
-        rollbar.debug("Unauthorized request");
+        rollbar.error("Unauthorized request");
         return exception.getMessage();
     }
 }
