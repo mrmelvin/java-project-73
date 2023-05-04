@@ -35,7 +35,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task updateTask(Long taskId, TaskDto taskDto) {
         final Task taskToUpdate = taskRepository.findById(taskId).get();
-
+        merge(taskToUpdate, taskDto);
         return taskRepository.save(taskToUpdate);
     }
 
