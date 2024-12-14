@@ -45,6 +45,7 @@ public class LabelController {
         return labelService.createLabel(labelDto);
     }
 
+    @Operation(summary = "Get all users")
     @ApiResponses(@ApiResponse(responseCode = "200", content =
         @Content(schema = @Schema(implementation = Label.class))
     ))
@@ -54,18 +55,21 @@ public class LabelController {
     }
 
 
+    @Operation(summary = "Get user by id")
     @ApiResponses(@ApiResponse(responseCode = "200"))
     @GetMapping(ID)
     public Label getLabelById(@PathVariable final Long id) {
         return labelRepository.findById(id).get();
     }
 
+    @Operation(summary = "Update user by id")
     @ApiResponses(@ApiResponse(responseCode = "200"))
     @PutMapping(ID)
     public Label update(@PathVariable final long id, @RequestBody @Valid final LabelDto statusDto) {
         return labelService.updateLabel(id, statusDto);
     }
 
+    @Operation(summary = "Delete user by id")
     @ApiResponses(@ApiResponse(responseCode = "200"))
     @DeleteMapping(ID)
     public void delete(@PathVariable final long id) {
